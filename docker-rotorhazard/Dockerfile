@@ -23,23 +23,20 @@ RUN apt install unzip \
     && wget https://codeload.github.com/RotorHazard/RotorHazard/zip/v${ROTORHAZARD_VERSION} -O /tmp/rotorhazard.zip \
     && mkdir -p /tmp/rotorhazard \
     && unzip /tmp/rotorhazard.zip -d /tmp/rotorhazard/ \
-    && mv /tmp/rotorhazard/RotorHazard-${ROTORHAZARD_VERSION} /opt/rotorhazard \
+    && mv /tmp/rotorhazard/RotorHazard-${ROTORHAZARD_VERSION} /tmp/rotorhazard/RotorHazard \
     && rm -rf /tmp/rotorhazard.zip \
-    && python -m pip install -r /opt/rotorhazard/src/server/reqsNonPi.txt
+    && python -m pip install -r /tmp/rotorhazard/RotorHazard/src/server/reqsNonPi.txt
 
-# Copy services, configs and scripts
-# COPY service /etc/service/
-# COPY artifacts/scripts /
-# COPY artifacts/itop-cron.logrotate /etc/logrotate.d/itop-cron
-# COPY artifacts/apache2.fqdn.conf /etc/apache2/conf-available/fqdn.conf
-# COPY artifacts/apache2.security.conf /etc/apache2/conf-available/security.conf
+COPY init.sh /opt/rotorhazard/init.sh
+RUN chmod u+x /opt/rotorhazard/init.sh
 
-VOLUME ["/opt/rotorhazard"]
+# VOLUME ["/opt/rotorhazard/RotorHazard"]
 
-WORKDIR /opt/rotorhazard/src/server
+WORKDIR /opt/rotorhazard
 
 EXPOSE ${PORT}
 
 # HEALTHCHECK --interval=5m --timeout=3s CMD curl -f http://localhost/ || exit 1
 
-ENTRYPOINT ["python", "./server.py"]
+# ENTRYPOINT ["./init.sh"]
+ENTRYPOINT ["/bin/bash"]
