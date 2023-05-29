@@ -30,7 +30,7 @@ RUN apt install unzip \
 COPY init.sh /opt/rotorhazard/init.sh
 RUN chmod u+x /opt/rotorhazard/init.sh
 
-# VOLUME ["/opt/rotorhazard/RotorHazard"]
+VOLUME ["/opt/rotorhazard/RotorHazard"]
 
 WORKDIR /opt/rotorhazard
 
@@ -38,5 +38,5 @@ EXPOSE ${PORT}
 
 # HEALTHCHECK --interval=5m --timeout=3s CMD curl -f http://localhost/ || exit 1
 
-# ENTRYPOINT ["./init.sh"]
-ENTRYPOINT ["/bin/bash"]
+ENTRYPOINT ["./init.sh"]
+# ENTRYPOINT ["/bin/bash"]
