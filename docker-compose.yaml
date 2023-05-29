@@ -1,0 +1,9 @@
+services:
+  rotorhazard:
+    image: jeremyemerson/rotorhazard:latest
+    ports:
+      - 8080:5000
+    environment:
+      VERSION: 3.2.1
+    volumes:
+      - /opt/rotorhazard:/opt/rotorhazard

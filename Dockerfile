@@ -1,10 +1,11 @@
 FROM ubuntu
 
-ARG PYTHON_VERSION=3.10
-ARG ROTORHAZARD_VERSION=3.2.1
-ARG PORT=8080
+ENV VERSION=3.2.1
+ENV PORT=5000
 
 ENV DEBIAN_FRONTEND noninteractive
+
+ARG PYTHON_VERSION=3.10
 
 # Install python
 RUN apt update \
@@ -19,11 +20,10 @@ RUN apt update \
 
 # Install rotorohazard
 RUN apt install unzip \
-    && rm -rf /opt/rotorhazard \
-    && wget https://codeload.github.com/RotorHazard/RotorHazard/zip/v${ROTORHAZARD_VERSION} -O /tmp/rotorhazard.zip \
+    && wget https://codeload.github.com/RotorHazard/RotorHazard/zip/v${VERSION} -O /tmp/rotorhazard.zip \
     && mkdir -p /tmp/rotorhazard \
     && unzip /tmp/rotorhazard.zip -d /tmp/rotorhazard/ \
-    && mv /tmp/rotorhazard/RotorHazard-${ROTORHAZARD_VERSION} /opt/rotorhazard \
+    && mv /tmp/rotorhazard/RotorHazard-${VERSION} /opt/rotorhazard \
     && rm -rf /tmp/rotorhazard.zip \
     && python -m pip install -r /opt/rotorhazard/src/server/reqsNonPi.txt
 
