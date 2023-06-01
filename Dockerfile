@@ -1,8 +1,8 @@
 FROM ubuntu
 
 ARG PYTHON_VERSION=3.10
-ARG ROTORHAZARD_VERSION=3.2.1
-ARG PORT=8080
+ARG VERSION=3.2.1
+# ARG PORT=5000
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -19,24 +19,25 @@ RUN apt update \
 
 # Install rotorohazard
 RUN apt install unzip \
-    && rm -rf /opt/rotorhazard \
-    && wget https://codeload.github.com/RotorHazard/RotorHazard/zip/v${ROTORHAZARD_VERSION} -O /tmp/rotorhazard.zip \
+    # && rm -rf /opt/rotorhazard \
+    && wget https://codeload.github.com/RotorHazard/RotorHazard/zip/v${VERSION} -O /tmp/rotorhazard.zip \
     && mkdir -p /tmp/rotorhazard \
     && unzip /tmp/rotorhazard.zip -d /tmp/rotorhazard/ \
-    && mv /tmp/rotorhazard/RotorHazard-${ROTORHAZARD_VERSION} /tmp/rotorhazard/RotorHazard \
+    && mv /tmp/rotorhazard/RotorHazard-${VERSION} /tmp/rotorhazard/RotorHazard \
     && rm -rf /tmp/rotorhazard.zip \
     && python -m pip install -r /tmp/rotorhazard/RotorHazard/src/server/reqsNonPi.txt
 
-COPY init.sh /opt/rotorhazard/init.sh
-RUN chmod u+x /opt/rotorhazard/init.sh
+# Configure init script
+COPY init_rotorhazard.sh /opt/init_rotorhazard.sh
+RUN chmod u+x /opt/init_rotorhazard.sh
 
-VOLUME ["/opt/rotorhazard/RotorHazard"]
+VOLUME ["/opt/rotorhazard"]
 
-WORKDIR /opt/rotorhazard
+WORKDIR /opt
 
-EXPOSE ${PORT}
+EXPOSE 5000
 
 # HEALTHCHECK --interval=5m --timeout=3s CMD curl -f http://localhost/ || exit 1
 
-ENTRYPOINT ["./init.sh"]
+ENTRYPOINT ["/opt/init_rotorhazard.sh"]
 # ENTRYPOINT ["/bin/bash"]
