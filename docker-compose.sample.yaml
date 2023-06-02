@@ -6,4 +6,4 @@ services:
     ports:
       - 8080:5000
     volumes:
-      - /Users/jemerson/Documents/opt/rotorhazard:/opt/rotorhazard
+      - /opt/rotorhazard:/opt/rotorhazard
