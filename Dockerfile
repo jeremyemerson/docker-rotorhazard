@@ -31,7 +31,7 @@ RUN apt install unzip \
 COPY init_rotorhazard.sh /opt/init_rotorhazard.sh
 RUN chmod u+x /opt/init_rotorhazard.sh
 
-VOLUME ["/opt/rotorhazard"]
+VOLUME ["/opt/rotorhazard","/dev"]
 
 WORKDIR /opt
 
