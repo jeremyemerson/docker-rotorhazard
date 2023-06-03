@@ -1,8 +1,16 @@
 services:
   rotorhazard:
-    build: .
+    build: 
+      context: ./build
+      platforms:
+        - "linux/amd64"
+        # - "linux/arm64"
+      args:
+        VERSION: 4.0.0-beta.3
+      tags:
+        - "rotorhazard:build"
     # image: dockerrotorhazard:3.2.1
-    # user: 1001:1001
+    restart: unless-stopped
     ports:
       - 8080:5000
     volumes:
